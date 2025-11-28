@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Vista Restaurant - Fine Dining in Montvale</title>
+    <link rel="stylesheet" href="restaurant.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Bella Vista</div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="hero-title">Welcome to Bella Vista</h1>
+                <p class="hero-subtitle">Experience Fine Dining in the Heart of Montvale</p>
+                <a href="#menu" class="btn btn-primary">View Our Menu</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            <p class="section-subtitle">Delicious dishes crafted with passion</p>
+
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="appetizers">Appetizers</button>
+                <button class="category-btn" data-category="mains">Main Course</button>
+                <button class="category-btn" data-category="desserts">Desserts</button>
+                <button class="category-btn" data-category="drinks">Drinks</button>
+            </div>
+
+            <div class="menu-grid" id="menuGrid">
+                <!-- Appetizers -->
+                <div class="menu-item" data-category="appetizers">
+                    <div class="menu-item-icon">🥗</div>
+                    <h3 class="menu-item-name">Caesar Salad</h3>
+                    <p class="menu-item-description">Fresh romaine lettuce, parmesan cheese, croutons, and Caesar dressing</p>
+                    <span class="menu-item-price">$12.99</span>
+                </div>
+
+                <div class="menu-item" data-category="appetizers">
+                    <div class="menu-item-icon">🦐</div>
+                    <h3 class="menu-item-name">Shrimp Cocktail</h3>
+                    <p class="menu-item-description">Jumbo shrimp served with tangy cocktail sauce</p>
+                    <span class="menu-item-price">$16.99</span>
+                </div>
+
+                <div class="menu-item" data-category="appetizers">
+                    <div class="menu-item-icon">🍄</div>
+                    <h3 class="menu-item-name">Stuffed Mushrooms</h3>
+                    <p class="menu-item-description">Portobello mushrooms filled with herbs and cheese</p>
+                    <span class="menu-item-price">$13.99</span>
+                </div>
+
+                <!-- Main Course -->
+                <div class="menu-item" data-category="mains">
+                    <div class="menu-item-icon">🥩</div>
+                    <h3 class="menu-item-name">Ribeye Steak</h3>
+                    <p class="menu-item-description">12oz premium ribeye, grilled to perfection, served with seasonal vegetables</p>
+                    <span class="menu-item-price">$38.99</span>
+                </div>
+
+                <div class="menu-item" data-category="mains">
+                    <div class="menu-item-icon">🐟</div>
+                    <h3 class="menu-item-name">Grilled Salmon</h3>
+                    <p class="menu-item-description">Atlantic salmon with lemon butter sauce and asparagus</p>
+                    <span class="menu-item-price">$32.99</span>
+                </div>
+
+                <div class="menu-item" data-category="mains">
+                    <div class="menu-item-icon">🍝</div>
+                    <h3 class="menu-item-name">Fettuccine Alfredo</h3>
+                    <p class="menu-item-description">Homemade pasta in creamy parmesan sauce with grilled chicken</p>
+                    <span class="menu-item-price">$24.99</span>
+                </div>
+
+                <div class="menu-item" data-category="mains">
+                    <div class="menu-item-icon">🍗</div>
+                    <h3 class="menu-item-name">Roasted Chicken</h3>
+                    <p class="menu-item-description">Half chicken roasted with herbs, served with mashed potatoes</p>
+                    <span class="menu-item-price">$26.99</span>
+                </div>
+
+                <div class="menu-item" data-category="mains">
+                    <div class="menu-item-icon">🦞</div>
+                    <h3 class="menu-item-name">Lobster Tail</h3>
+                    <p class="menu-item-description">Butter-poached lobster tail with garlic herb butter</p>
+                    <span class="menu-item-price">$45.99</span>
+                </div>
+
+                <!-- Desserts -->
+                <div class="menu-item" data-category="desserts">
+                    <div class="menu-item-icon">🍰</div>
+                    <h3 class="menu-item-name">Tiramisu</h3>
+                    <p class="menu-item-description">Classic Italian dessert with coffee-soaked ladyfingers</p>
+                    <span class="menu-item-price">$9.99</span>
+                </div>
+
+                <div class="menu-item" data-category="desserts">
+                    <div class="menu-item-icon">🍫</div>
+                    <h3 class="menu-item-name">Chocolate Lava Cake</h3>
+                    <p class="menu-item-description">Warm chocolate cake with molten center, served with vanilla ice cream</p>
+                    <span class="menu-item-price">$10.99</span>
+                </div>
+
+                <div class="menu-item" data-category="desserts">
+                    <div class="menu-item-icon">🍮</div>
+                    <h3 class="menu-item-name">Crème Brûlée</h3>
+                    <p class="menu-item-description">Creamy custard with caramelized sugar topping</p>
+                    <span class="menu-item-price">$8.99</span>
+                </div>
+
+                <!-- Drinks -->
+                <div class="menu-item" data-category="drinks">
+                    <div class="menu-item-icon">🍷</div>
+                    <h3 class="menu-item-name">House Wine</h3>
+                    <p class="menu-item-description">Red or white wine selection by the glass</p>
+                    <span class="menu-item-price">$8.99</span>
+                </div>
+
+                <div class="menu-item" data-category="drinks">
+                    <div class="menu-item-icon">🍹</div>
+                    <h3 class="menu-item-name">Signature Cocktail</h3>
+                    <p class="menu-item-description">Bella Vista special blend with fresh fruits</p>
+                    <span class="menu-item-price">$12.99</span>
+                </div>
+
+                <div class="menu-item" data-category="drinks">
+                    <div class="menu-item-icon">☕</div>
+                    <h3 class="menu-item-name">Espresso</h3>
+                    <p class="menu-item-description">Rich Italian espresso made to order</p>
+                    <span class="menu-item-price">$4.99</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">About Bella Vista</h2>
+                    <p>Welcome to Bella Vista, where culinary excellence meets warm hospitality. Located in the heart of Montvale, we have been serving our community since 2010.</p>
+                    <p>Our master chefs combine traditional recipes with modern techniques to create unforgettable dining experiences. We source only the finest local ingredients to ensure every dish is crafted to perfection.</p>
+                    <p>Whether you're celebrating a special occasion or enjoying a casual dinner, Bella Vista offers the perfect ambiance and exceptional service.</p>
+
+                    <div class="about-features">
+                        <div class="feature">
+                            <div class="feature-icon">👨‍🍳</div>
+                            <h3>Expert Chefs</h3>
+                            <p>Trained in culinary excellence</p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">🌱</div>
+                            <h3>Fresh Ingredients</h3>
+                            <p>Locally sourced daily</p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">⭐</div>
+                            <h3>5-Star Service</h3>
+                            <p>Exceptional hospitality</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Visit Us</h2>
+            <p class="section-subtitle">We'd love to serve you</p>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-details">
+                            <h3>Location</h3>
+                            <p>123 Main Street<br>Montvale, NJ 07645</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-details">
+                            <h3>Phone</h3>
+                            <p>(201) 555-1234</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p>info@bellavista.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">🕐</div>
+                        <div class="contact-details">
+                            <h3>Hours</h3>
+                            <p>Mon-Thu: 11:00 AM - 10:00 PM<br>
+                            Fri-Sat: 11:00 AM - 11:00 PM<br>
+                            Sunday: 10:00 AM - 9:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reservation-form">
+                    <h3>Make a Reservation</h3>
+                    <form id="reservationForm">
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" placeholder="Phone Number" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="time" required>
+                                <option value="">Select Time</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="12:00">12:00 PM</option>
+                                <option value="13:00">1:00 PM</option>
+                                <option value="14:00">2:00 PM</option>
+                                <option value="17:00">5:00 PM</option>
+                                <option value="18:00">6:00 PM</option>
+                                <option value="19:00">7:00 PM</option>
+                                <option value="20:00">8:00 PM</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select id="guests" required>
+                                <option value="">Number of Guests</option>
+                                <option value="1">1 Guest</option>
+                                <option value="2">2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                                <option value="5">5 Guests</option>
+                                <option value="6">6+ Guests</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Reserve Table</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Bella Vista</h3>
+                    <p>Fine dining experience in Montvale</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bella Vista Restaurant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="restaurant.js"></script>
+</body>
+</html>
