@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects - Weather & Restaurant Websites</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .project-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .project-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .project-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+        }
+
+        .project-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .project-features li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .project-features li::before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .footer h3 {
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .footer p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Web Projects</h1>
+            <p>Weather Applications & Restaurant Website</p>
+        </div>
+
+        <div class="projects-grid">
+            <!-- Weather Homepage -->
+            <div class="project-card">
+                <div class="project-icon">🌤️</div>
+                <h2 class="project-title">Montvale Weather</h2>
+                <p class="project-description">
+                    Comprehensive weather homepage featuring current conditions and a detailed 7-day forecast for Montvale.
+                </p>
+                <ul class="project-features">
+                    <li>Current temperature & conditions</li>
+                    <li>7-day weather forecast</li>
+                    <li>Feels-like temperature</li>
+                    <li>Humidity & wind data</li>
+                    <li>Auto-refresh every 10 minutes</li>
+                </ul>
+                <a href="public/weather-home.html" class="btn">View Weather</a>
+            </div>
+
+            <!-- Weather Display Board -->
+            <div class="project-card">
+                <div class="project-icon">🌦️</div>
+                <h2 class="project-title">Weather Display Board</h2>
+                <p class="project-description">
+                    Interactive weather board with animated effects and location-based weather detection.
+                </p>
+                <ul class="project-features">
+                    <li>Animated weather effects</li>
+                    <li>Search any city worldwide</li>
+                    <li>Use My Location feature</li>
+                    <li>Real-time animations</li>
+                    <li>Beautiful gradient display</li>
+                </ul>
+                <a href="public/weather-display-board-clean.html" class="btn">Try It Out</a>
+            </div>
+
+            <!-- Restaurant Website -->
+            <div class="project-card">
+                <div class="project-icon">🍽️</div>
+                <h2 class="project-title">Bella Vista Restaurant</h2>
+                <p class="project-description">
+                    Elegant fine dining restaurant website with menu, reservations, and location information.
+                </p>
+                <ul class="project-features">
+                    <li>Filterable menu categories</li>
+                    <li>Online reservation form</li>
+                    <li>Restaurant information</li>
+                    <li>Mobile-friendly design</li>
+                    <li>Smooth animations</li>
+                </ul>
+                <a href="public/restaurant.html" class="btn">Visit Restaurant</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>About These Projects</h3>
+            <p>
+                All projects are built with modern web technologies including HTML5, CSS3, and JavaScript.
+                They feature responsive designs, smooth animations, and real-time data integration.
+            </p>
+            <p style="margin-top: 15px; font-size: 0.9rem;">
+                Weather data powered by Open-Meteo API
+            </p>
+        </div>
+    </div>
+</body>
+</html>
