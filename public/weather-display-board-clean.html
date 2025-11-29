@@ -45,10 +45,12 @@
             display: flex;
             gap: 15px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .search-input {
             flex: 1;
+            min-width: 200px;
             padding: 15px 20px;
             border: 2px solid #e0e0e0;
             border-radius: 50px;
@@ -82,6 +84,37 @@
 
         .search-btn:active {
             transform: translateY(0);
+        }
+
+        .location-btn {
+            padding: 15px 25px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .location-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .location-btn:active {
+            transform: translateY(0);
+        }
+
+        .location-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .display-board {
@@ -505,6 +538,10 @@
         <div class="search-container">
             <input type="text" class="search-input" id="cityInput" placeholder="Enter city name...">
             <button class="search-btn" id="searchBtn">Get Weather</button>
+            <button class="location-btn" id="locationBtn">
+                <span>📍</span>
+                <span>Use My Location</span>
+            </button>
         </div>
 
         <div id="error" class="error hidden"></div>
@@ -565,6 +602,7 @@
         const elements = {
             cityInput: document.getElementById('cityInput'),
             searchBtn: document.getElementById('searchBtn'),
+            locationBtn: document.getElementById('locationBtn'),
             error: document.getElementById('error'),
             loading: document.getElementById('loading'),
             weatherContent: document.getElementById('weatherContent'),
@@ -832,6 +870,79 @@
             }
         }
 
+        async function reverseGeocode(lat, lon) {
+            const response = await fetch(
+                `https://geocoding-api.open-meteo.com/v1/search?latitude=${lat}&longitude=${lon}&count=1&language=en&format=json`
+            );
+
+            if (!response.ok) {
+                throw new Error('Failed to get location name');
+            }
+
+            const data = await response.json();
+
+            if (!data.results || data.results.length === 0) {
+                throw new Error('Location not found');
+            }
+
+            return {
+                name: data.results[0].name,
+                country: data.results[0].country
+            };
+        }
+
+        async function fetchWeatherForCurrentLocation() {
+            if (!navigator.geolocation) {
+                showError('Geolocation is not supported by your browser');
+                return;
+            }
+
+            elements.locationBtn.disabled = true;
+            elements.locationBtn.innerHTML = '<span>📍</span><span>Getting location...</span>';
+            showLoading();
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    try {
+                        const { latitude, longitude } = position.coords;
+
+                        // Get city name from coordinates
+                        const location = await reverseGeocode(latitude, longitude);
+
+                        // Fetch weather for these coordinates
+                        await getWeather(latitude, longitude, location.name, location.country);
+
+                        elements.locationBtn.disabled = false;
+                        elements.locationBtn.innerHTML = '<span>📍</span><span>Use My Location</span>';
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showError('Failed to get weather for your location');
+                        elements.locationBtn.disabled = false;
+                        elements.locationBtn.innerHTML = '<span>📍</span><span>Use My Location</span>';
+                    }
+                },
+                (error) => {
+                    let errorMessage = 'Unable to get your location';
+
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = 'Location permission denied. Please enable location access.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = 'Location information unavailable';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = 'Location request timed out';
+                            break;
+                    }
+
+                    showError(errorMessage);
+                    elements.locationBtn.disabled = false;
+                    elements.locationBtn.innerHTML = '<span>📍</span><span>Use My Location</span>';
+                }
+            );
+        }
+
         elements.searchBtn.addEventListener('click', () => {
             const city = elements.cityInput.value.trim();
             if (city) {
@@ -839,6 +950,10 @@
             } else {
                 showError('Please enter a city name');
             }
+        });
+
+        elements.locationBtn.addEventListener('click', () => {
+            fetchWeatherForCurrentLocation();
         });
 
         elements.cityInput.addEventListener('keypress', (e) => {
