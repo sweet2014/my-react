@@ -464,11 +464,30 @@
 
         async function getWeather(lat, lon, cityName, country) {
             const response = await fetch(
-                `${WEATHER_API}?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`
+                `${WEATHER_API}?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weathercode,uv_index,pm2_5,pm10&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=auto`
             );
 
             const data = await response.json();
             return { data, cityName, country };
+        }
+
+        function getAirQualityLevel(pm25) {
+            if (pm25 === undefined || pm25 === null) return { level: 'N/A', color: '#999', emoji: '🌫️' };
+            if (pm25 <= 12) return { level: 'Good', color: '#4CAF50', emoji: '😊' };
+            if (pm25 <= 35) return { level: 'Moderate', color: '#FFC107', emoji: '😐' };
+            if (pm25 <= 55) return { level: 'Unhealthy for Sensitive', color: '#FF9800', emoji: '😷' };
+            if (pm25 <= 150) return { level: 'Unhealthy', color: '#F44336', emoji: '😨' };
+            if (pm25 <= 250) return { level: 'Very Unhealthy', color: '#9C27B0', emoji: '🤢' };
+            return { level: 'Hazardous', color: '#880E4F', emoji: '☠️' };
+        }
+
+        function getUVLevel(uv) {
+            if (uv === undefined || uv === null) return { level: 'N/A', color: '#999' };
+            if (uv <= 2) return { level: 'Low', color: '#4CAF50' };
+            if (uv <= 5) return { level: 'Moderate', color: '#FFC107' };
+            if (uv <= 7) return { level: 'High', color: '#FF9800' };
+            if (uv <= 10) return { level: 'Very High', color: '#F44336' };
+            return { level: 'Extreme', color: '#9C27B0' };
         }
 
         function displayWeather({ data, cityName, country }) {
@@ -477,6 +496,10 @@
             const humidity = data.hourly.relative_humidity_2m[currentHour];
             const feelsLike = data.hourly.apparent_temperature[currentHour];
             const precipProb = data.hourly.precipitation_probability[currentHour];
+            const pm25 = data.hourly.pm2_5[currentHour];
+            const uvIndex = data.hourly.uv_index[currentHour];
+            const airQuality = getAirQualityLevel(pm25);
+            const uvLevel = getUVLevel(uvIndex);
 
             const html = `
                 <div class="main-weather">
@@ -489,13 +512,16 @@
                                     <span>📍</span>
                                     <span>${cityName}, ${country}</span>
                                 </div>
+                                <div class="location" style="font-size: 1.2rem; margin-top: 10px;">
+                                    <span>🌡️</span>
+                                    <span>Feels like ${Math.round(feelsLike)}°C</span>
+                                </div>
+                                <div class="location" style="font-size: 1.2rem; margin-top: 5px;">
+                                    <span>${airQuality.emoji}</span>
+                                    <span style="color: ${airQuality.color}; font-weight: 600;">Air Quality: ${airQuality.level}</span>
+                                </div>
                             </div>
                             <div class="details-section">
-                                <div class="detail-item">
-                                    <div class="detail-icon">🌡️</div>
-                                    <div class="detail-label">Feels Like</div>
-                                    <div class="detail-value">${Math.round(feelsLike)}°C</div>
-                                </div>
                                 <div class="detail-item">
                                     <div class="detail-icon">💧</div>
                                     <div class="detail-label">Humidity</div>
@@ -510,6 +536,11 @@
                                     <div class="detail-icon">🧭</div>
                                     <div class="detail-label">Direction</div>
                                     <div class="detail-value">${getWindDirection(current.winddirection)}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-icon">☀️</div>
+                                    <div class="detail-label">UV Index</div>
+                                    <div class="detail-value" style="color: ${uvLevel.color}">${Math.round(uvIndex || 0)}</div>
                                 </div>
                             </div>
                         </div>
@@ -530,8 +561,12 @@
                             <div class="info-item-value">${precipProb || 0}%</div>
                         </div>
                         <div class="info-item">
-                            <div class="info-item-label">Weather Code</div>
-                            <div class="info-item-value">${current.weathercode}</div>
+                            <div class="info-item-label">PM2.5</div>
+                            <div class="info-item-value" style="color: ${airQuality.color}">${pm25 ? pm25.toFixed(1) : 'N/A'} µg/m³</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">UV Level</div>
+                            <div class="info-item-value" style="color: ${uvLevel.color}">${uvLevel.level}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-item-label">Today's High</div>
@@ -540,6 +575,10 @@
                         <div class="info-item">
                             <div class="info-item-label">Today's Low</div>
                             <div class="info-item-value">${Math.round(data.daily.temperature_2m_min[0])}°C</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">Max UV Today</div>
+                            <div class="info-item-value">${Math.round(data.daily.uv_index_max[0] || 0)}</div>
                         </div>
                     </div>
                 </div>
