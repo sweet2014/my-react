@@ -864,6 +864,11 @@
             try {
                 showLoading();
                 const location = await getCoordinates(city);
+
+                // Update input with the actual city name from API
+                elements.cityInput.value = location.name;
+                elements.cityInput.placeholder = `${location.name}, ${location.country}`;
+
                 await getWeather(location.lat, location.lon, location.name, location.country);
             } catch (error) {
                 showError(error.message);
@@ -908,6 +913,10 @@
 
                         // Get city name from coordinates
                         const location = await reverseGeocode(latitude, longitude);
+
+                        // Update search input with detected city
+                        elements.cityInput.value = location.name;
+                        elements.cityInput.placeholder = `${location.name}, ${location.country}`;
 
                         // Fetch weather for these coordinates
                         await getWeather(latitude, longitude, location.name, location.country);
