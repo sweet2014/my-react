@@ -48,6 +48,31 @@
             opacity: 0.9;
         }
 
+        .header-date {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .sun-times {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+
+        .sun-time-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sun-icon {
+            font-size: 1.5rem;
+        }
+
         /* Main Weather Card */
         .main-weather {
             background: rgba(255, 255, 255, 0.95);
@@ -364,6 +389,8 @@
         <div class="header">
             <h1>Montvale Weather</h1>
             <p>Current conditions and forecast</p>
+            <div class="header-date" id="currentDate"></div>
+            <div class="sun-times" id="sunTimes"></div>
         </div>
 
         <div id="weatherContent">
@@ -464,7 +491,7 @@
 
         async function getWeather(lat, lon, cityName, country) {
             const response = await fetch(
-                `${WEATHER_API}?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weathercode,uv_index,pm2_5,pm10&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=auto`
+                `${WEATHER_API}?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weathercode,uv_index,pm2_5,pm10&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max,sunrise,sunset&timezone=auto`
             );
 
             const data = await response.json();
@@ -500,6 +527,31 @@
             const uvIndex = data.hourly.uv_index[currentHour];
             const airQuality = getAirQualityLevel(pm25);
             const uvLevel = getUVLevel(uvIndex);
+
+            // Format current date
+            const now = new Date();
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('en-US', dateOptions);
+
+            // Format sunrise and sunset times
+            const sunrise = new Date(data.daily.sunrise[0]);
+            const sunset = new Date(data.daily.sunset[0]);
+            const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+            const sunriseTime = sunrise.toLocaleTimeString('en-US', timeOptions);
+            const sunsetTime = sunset.toLocaleTimeString('en-US', timeOptions);
+
+            // Update header with date and sun times
+            document.getElementById('currentDate').textContent = formattedDate;
+            document.getElementById('sunTimes').innerHTML = `
+                <div class="sun-time-item">
+                    <span class="sun-icon">🌅</span>
+                    <span>Sunrise: ${sunriseTime}</span>
+                </div>
+                <div class="sun-time-item">
+                    <span class="sun-icon">🌇</span>
+                    <span>Sunset: ${sunsetTime}</span>
+                </div>
+            `;
 
             const html = `
                 <div class="main-weather">
