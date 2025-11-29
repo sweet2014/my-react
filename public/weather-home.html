@@ -319,6 +319,15 @@
                 font-size: 2rem;
             }
 
+            .header p {
+                font-size: 1rem;
+            }
+
+            .sun-times {
+                flex-direction: column;
+                gap: 10px;
+            }
+
             .main-weather {
                 padding: 30px 20px;
             }
@@ -343,6 +352,144 @@
             .forecast-grid {
                 grid-template-columns: 1fr;
             }
+
+            .prominent-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .warning-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .warning-icon {
+                font-size: 2rem;
+            }
+
+            .warning-title {
+                font-size: 1.1rem;
+            }
+
+            .warning-description {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Warnings Section */
+        .warnings-section {
+            margin-bottom: 30px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .warning-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 5px solid;
+        }
+
+        .warning-card.severe {
+            border-left-color: #F44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .warning-card.moderate {
+            border-left-color: #FF9800;
+            background: rgba(255, 152, 0, 0.1);
+        }
+
+        .warning-card.info {
+            border-left-color: #2196F3;
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .warning-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .warning-content {
+            flex: 1;
+        }
+
+        .warning-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .warning-description {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Enhanced Info Cards */
+        .prominent-info {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .prominent-info-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .prominent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .prominent-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s;
+        }
+
+        .prominent-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .prominent-item-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .prominent-item-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .prominent-item-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .prominent-item-subtitle {
+            font-size: 0.95rem;
+            margin-top: 5px;
+            opacity: 0.85;
         }
 
         /* Error State */
@@ -517,6 +664,129 @@
             return { level: 'Extreme', color: '#9C27B0' };
         }
 
+        function generateWarnings(current, hourlyData, currentHour, daily) {
+            const warnings = [];
+            const pm25 = hourlyData.pm2_5[currentHour];
+            const uvIndex = hourlyData.uv_index[currentHour];
+            const windSpeed = current.windspeed;
+            const temp = current.temperature;
+            const weatherCode = current.weathercode;
+
+            // Air Quality Warnings
+            if (pm25 > 55) {
+                warnings.push({
+                    severity: 'severe',
+                    icon: '⚠️',
+                    title: 'Unhealthy Air Quality',
+                    description: `PM2.5 level is ${pm25.toFixed(1)} µg/m³. Everyone may begin to experience health effects. Sensitive groups should avoid outdoor activities.`
+                });
+            } else if (pm25 > 35) {
+                warnings.push({
+                    severity: 'moderate',
+                    icon: '😷',
+                    title: 'Moderate Air Quality',
+                    description: `PM2.5 level is ${pm25.toFixed(1)} µg/m³. Unusually sensitive people should consider reducing prolonged outdoor exertion.`
+                });
+            }
+
+            // UV Warnings
+            if (uvIndex > 7) {
+                warnings.push({
+                    severity: 'severe',
+                    icon: '☀️',
+                    title: 'High UV Index',
+                    description: `UV Index is ${Math.round(uvIndex)}. Take extra precautions - unprotected skin can burn in minutes. Wear sunscreen SPF 30+, sunglasses, and protective clothing.`
+                });
+            } else if (uvIndex > 5) {
+                warnings.push({
+                    severity: 'moderate',
+                    icon: '🕶️',
+                    title: 'Moderate UV Index',
+                    description: `UV Index is ${Math.round(uvIndex)}. Seek shade during midday hours. Apply sunscreen SPF 30+ and wear protective clothing.`
+                });
+            }
+
+            // Wind Warnings
+            if (windSpeed > 50) {
+                warnings.push({
+                    severity: 'severe',
+                    icon: '💨',
+                    title: 'High Wind Warning',
+                    description: `Wind speed is ${Math.round(windSpeed)} km/h. Strong winds may cause property damage. Secure outdoor objects and avoid unnecessary travel.`
+                });
+            } else if (windSpeed > 30) {
+                warnings.push({
+                    severity: 'moderate',
+                    icon: '🌬️',
+                    title: 'Windy Conditions',
+                    description: `Wind speed is ${Math.round(windSpeed)} km/h. Expect breezy conditions. Secure loose outdoor items.`
+                });
+            }
+
+            // Temperature Warnings
+            if (temp > 35) {
+                warnings.push({
+                    severity: 'severe',
+                    icon: '🔥',
+                    title: 'Extreme Heat',
+                    description: `Temperature is ${Math.round(temp)}°C. Extreme heat conditions. Stay hydrated, avoid strenuous outdoor activities, and check on elderly neighbors.`
+                });
+            } else if (temp < -10) {
+                warnings.push({
+                    severity: 'severe',
+                    icon: '❄️',
+                    title: 'Extreme Cold',
+                    description: `Temperature is ${Math.round(temp)}°C. Extreme cold conditions. Dress in layers, limit outdoor exposure, and watch for signs of frostbite.`
+                });
+            }
+
+            // Severe Weather Warnings
+            if ([95, 96, 99].includes(weatherCode)) {
+                warnings.push({
+                    severity: 'severe',
+                    icon: '⛈️',
+                    title: 'Thunderstorm Warning',
+                    description: 'Thunderstorms in the area. Stay indoors, avoid windows, and unplug sensitive electronics. Do not use corded phones.'
+                });
+            } else if ([65, 82].includes(weatherCode)) {
+                warnings.push({
+                    severity: 'moderate',
+                    icon: '🌧️',
+                    title: 'Heavy Rain Alert',
+                    description: 'Heavy rain expected. Drive carefully, watch for flooding in low-lying areas, and allow extra travel time.'
+                });
+            } else if ([75, 86].includes(weatherCode)) {
+                warnings.push({
+                    severity: 'severe',
+                    icon: '❄️',
+                    title: 'Heavy Snow Warning',
+                    description: 'Heavy snow conditions. Travel may be hazardous. Stay off roads if possible and prepare for power outages.'
+                });
+            }
+
+            return warnings;
+        }
+
+        function displayWarnings(warnings) {
+            if (warnings.length === 0) return '';
+
+            const warningsHtml = warnings.map(warning => `
+                <div class="warning-card ${warning.severity}">
+                    <div class="warning-icon">${warning.icon}</div>
+                    <div class="warning-content">
+                        <div class="warning-title">${warning.title}</div>
+                        <div class="warning-description">${warning.description}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="warnings-section">
+                    ${warningsHtml}
+                </div>
+            `;
+        }
+
         function displayWeather({ data, cityName, country }) {
             const current = data.current_weather;
             const currentHour = new Date(current.time).getHours();
@@ -553,7 +823,36 @@
                 </div>
             `;
 
+            // Generate warnings
+            const warnings = generateWarnings(current, data.hourly, currentHour, data.daily);
+
             const html = `
+                ${displayWarnings(warnings)}
+
+                <div class="prominent-info">
+                    <h3 class="prominent-info-title">Current Conditions</h3>
+                    <div class="prominent-grid">
+                        <div class="prominent-item" style="background: linear-gradient(135deg, ${airQuality.color}, ${airQuality.color}dd);">
+                            <div class="prominent-item-icon">${airQuality.emoji}</div>
+                            <div class="prominent-item-label">Air Quality</div>
+                            <div class="prominent-item-value">${airQuality.level}</div>
+                            <div class="prominent-item-subtitle">PM2.5: ${pm25 ? pm25.toFixed(1) : 'N/A'} µg/m³</div>
+                        </div>
+                        <div class="prominent-item">
+                            <div class="prominent-item-icon">💨</div>
+                            <div class="prominent-item-label">Wind Speed</div>
+                            <div class="prominent-item-value">${Math.round(current.windspeed)} km/h</div>
+                            <div class="prominent-item-subtitle">${getWindDirection(current.winddirection)} Direction</div>
+                        </div>
+                        <div class="prominent-item" style="background: linear-gradient(135deg, ${uvLevel.color}, ${uvLevel.color}dd);">
+                            <div class="prominent-item-icon">☀️</div>
+                            <div class="prominent-item-label">UV Index</div>
+                            <div class="prominent-item-value">${Math.round(uvIndex || 0)}</div>
+                            <div class="prominent-item-subtitle">${uvLevel.level} Risk</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="main-weather">
                     <div class="weather-content">
                         <div class="current-weather">
