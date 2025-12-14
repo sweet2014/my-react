@@ -1,5 +1,6 @@
 import React from 'react';
 import Weather from './Weather';
+import ClothingCategories from './ClothingCategories';
 import './App.css';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       </header>
       <main>
         <Weather />
+        <ClothingCategories />
       </main>
     </div>
   );
